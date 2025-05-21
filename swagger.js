@@ -6,15 +6,19 @@ const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Meeting Room Booking API',
+      title: 'MeetSpace API',
       version: '1.0.0',
-      description: 'API for booking meeting rooms',
+      description: 'API for the MeetSpace meeting room booking system',
       contact: {
         name: 'API Support',
-        email: 'support@example.com'
+        email: 'support@meetspace.example.com'
       }
     },
     servers: [
+      {
+        url: 'https://meetspace-backend.vercel.app',
+        description: 'Production server'
+      },
       {
         url: 'http://localhost:4321',
         description: 'Development server'
@@ -184,13 +188,13 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 function setupSwagger(app) {
   // Serve swagger docs
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  
+
   // Serve swagger spec as JSON
   app.get('/swagger.json', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(swaggerSpec);
   });
-  
+
   console.log('Swagger documentation available at /api-docs');
 }
 
