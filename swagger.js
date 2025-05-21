@@ -20,10 +20,14 @@ const swaggerOptions = {
         description: 'Production server'
       },
       {
-        url: 'http://localhost:4321',
+        url: 'http://localhost:4322',
         description: 'Development server'
       }
     ],
+    externalDocs: {
+      description: 'MongoDB Atlas Database',
+      url: 'https://cloud.mongodb.com/v2/65fd9c9a1a3e4f7a9c8e5c7d#/clusters'
+    },
     components: {
       schemas: {
         Room: {
