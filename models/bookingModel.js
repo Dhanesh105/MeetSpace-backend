@@ -2,12 +2,22 @@ const Booking = require('./Booking');
 
 // Find all bookings
 exports.findAll = async () => {
-  return await Booking.find().sort({ startTime: 1 });
+  try {
+    return await Booking.find().sort({ startTime: 1 });
+  } catch (error) {
+    console.error('Error in findAll:', error);
+    throw error;
+  }
 };
 
 // Find booking by ID
 exports.findById = async (id) => {
-  return await Booking.findById(id);
+  try {
+    return await Booking.findById(id);
+  } catch (error) {
+    console.error('Error in findById:', error);
+    throw error;
+  }
 };
 
 // Create new booking
@@ -66,17 +76,24 @@ exports.findByUserId = async (userId) => {
 
 // Find bookings for a specific time range
 exports.findByTimeRange = async (startTime, endTime) => {
-  const start = new Date(startTime);
-  const end = new Date(endTime);
+  try {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
 
-  return await Booking.find({
-    $or: [
-      // Booking starts within the range
-      { startTime: { $gte: start, $lte: end } },
-      // Booking ends within the range
-      { endTime: { $gte: start, $lte: end } },
-      // Booking spans the entire range
-      { startTime: { $lte: start }, endTime: { $gte: end } }
-    ]
-  }).sort({ startTime: 1 });
+    console.log(`Finding bookings between ${start.toISOString()} and ${end.toISOString()}`);
+
+    return await Booking.find({
+      $or: [
+        // Booking starts within the range
+        { startTime: { $gte: start, $lte: end } },
+        // Booking ends within the range
+        { endTime: { $gte: start, $lte: end } },
+        // Booking spans the entire range
+        { startTime: { $lte: start }, endTime: { $gte: end } }
+      ]
+    }).sort({ startTime: 1 });
+  } catch (error) {
+    console.error('Error in findByTimeRange:', error);
+    throw error;
+  }
 };

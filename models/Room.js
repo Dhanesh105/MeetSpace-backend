@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const connectDB = require('../config/db');
+
+// Ensure database connection is established before defining the model
+connectDB().catch(err => console.error('Failed to connect to MongoDB:', err));
 
 const RoomSchema = new mongoose.Schema({
   // Add a custom string ID field

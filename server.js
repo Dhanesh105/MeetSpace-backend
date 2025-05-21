@@ -10,14 +10,8 @@ const setupSwagger = require('./swagger');
 // Load environment variables
 dotenv.config();
 
-// Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 4321;
-
-// Connect to MongoDB
-connectDB().catch(err => {
-  console.error('Failed to connect to MongoDB:', err);
-});
 
 // Middleware
 app.use(cors());
@@ -38,28 +32,25 @@ setupSwagger(app);
 app.get('/', (req, res) => {
   res.json({
     success: true,
-    message: 'MeetSpace API is running',
-    documentation: '/api-docs',
+    message: 'Meeting Room Booking API is running',
     endpoints: {
       // Room endpoints
-      getAllRooms: 'GET /api/rooms',
-      getRoomById: 'GET /api/rooms/:id',
-      getAvailableRooms: 'GET /api/rooms/available?startTime=ISO_DATE&endTime=ISO_DATE',
-      getRoomBookings: 'GET /api/rooms/:id/bookings',
-      checkRoomAvailability: 'GET /api/rooms/:id/availability?startTime=ISO_DATE&endTime=ISO_DATE',
-      createRoom: 'POST /api/rooms',
-      updateRoom: 'PUT /api/rooms/:id',
-      deleteRoom: 'DELETE /api/rooms/:id',
+      getAllRooms: 'GET /rooms',
+      getRoomById: 'GET /rooms/:roomId',
+      getAvailableRooms: 'GET /rooms/available?startTime=ISO_DATE&endTime=ISO_DATE',
+      getRoomBookings: 'GET /rooms/:roomId/bookings',
+      checkRoomAvailability: 'GET /rooms/:roomId/availability?startTime=ISO_DATE&endTime=ISO_DATE',
+      createRoom: 'POST /rooms',
+      updateRoom: 'PUT /rooms/:roomId',
+      deleteRoom: 'DELETE /rooms/:roomId',
 
       // Booking endpoints
-      getAllBookings: 'GET /api/bookings',
-      getBookingById: 'GET /api/bookings/:id',
-      getBookingsForDateRange: 'GET /api/bookings?startDate=ISO_DATE&endDate=ISO_DATE',
-      createBooking: 'POST /api/bookings',
-      updateBooking: 'PUT /api/bookings/:id',
-      deleteBooking: 'DELETE /api/bookings/:id'
-    },
-    version: '1.0.0'
+      getAllBookings: 'GET /bookings',
+      getBookingById: 'GET /bookings/:bookingId',
+      createBooking: 'POST /bookings',
+      updateBooking: 'PUT /bookings/:bookingId',
+      deleteBooking: 'DELETE /bookings/:bookingId'
+    }
   });
 });
 
@@ -80,12 +71,14 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start the server if not in a serverless environment
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+// Connect to MongoDB
+connectDB()
+  .then(() => {
+    // Start the server after successful database connection
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('Failed to connect to MongoDB:', err);
   });
-}
-
-// Export the Express app for serverless environments (Vercel)
-module.exports = app;
