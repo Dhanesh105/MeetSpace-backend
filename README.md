@@ -41,8 +41,8 @@ This is the backend server for the MeetSpace application, a modern meeting room 
 
 3. Create a `.env` file in the root directory with the following variables:
    ```
-   PORT=4321
-   MONGODB_URI=mongodb://localhost:27017/booking_app
+   PORT=4322
+   MONGODB_URI=mongodb+srv://dt418105:WTTLjZDxeGpZSIBW@cluster0.e0hav.mongodb.net/meetspace?retryWrites=true&w=majority&appName=Cluster0
    ```
 
 4. Start the server:
@@ -54,7 +54,7 @@ This is the backend server for the MeetSpace application, a modern meeting room 
 
 Once the server is running, you can access the Swagger documentation at:
 ```
-http://localhost:4321/api-docs
+https://meet-space-backend-1.vercel.app/api-docs
 ```
 
 ## API Endpoints
@@ -117,6 +117,13 @@ node seed.js
 
 ```bash
 npm run dev
+```
+
+## Deployment
+
+The backend is deployed on Vercel at:
+```
+https://meet-space-backend-1.vercel.app
 ```
 
 ## License
